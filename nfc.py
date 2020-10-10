@@ -41,8 +41,7 @@ class Reader:
         mandatory:
         CLA INS P1 P2
 
-        return the data or sw1 sw2 depending on the request
-        """
+        return the data or sw1 sw2 depending on the request"""
         mode = dictionary.alias.get(mode) or mode
         payload = dictionary.options.get(mode)
 
@@ -135,8 +134,7 @@ class Reader:
 
         @PICC value: 1 byte, default is 0xFF
 
-        E.g. 0xFF
-        """
+        E.g. 0xFF"""
         self.command("set_picc_version", [picc_value])
 
     def buzzer_sound(self, poll_buzzer_status):
@@ -152,8 +150,7 @@ class Reader:
 
         timeout parameter : 0x00 ~ 0x01 - 0xFE ~ 0xFF : (0,  5 second unit, infinite), default is 0xFF
 
-        E.g. 0x01
-        """
+        E.g. 0x01"""
         self.command("set_timeout", [timeout_parameter])
 
     @staticmethod
