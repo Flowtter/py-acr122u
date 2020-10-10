@@ -1,7 +1,6 @@
 import smartcard.System
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
-import sys
 
 from src import utils, option
 
@@ -17,7 +16,7 @@ class Reader:
         readers = smartcard.System.readers()
 
         if len(readers) == 0:
-            sys.exit("No readers available")
+            raise Exception("No readers available")
 
         reader = readers[0]
         c = reader.createConnection()
@@ -25,7 +24,7 @@ class Reader:
         try:
             c.connect()
         except:
-            sys.exit(
+            raise Exception(
                 "The reader has been deleted and no communication is now possible. Smartcard error code : 0x7FEFFF97"
                 "\nHint: try to connect a card to the reader")
 
@@ -47,7 +46,7 @@ class Reader:
         payload = option.options.get(mode)
 
         if not payload:
-            sys.exit("Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
+            raise Exception("Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
 
         payload = utils.replace_arguments(payload, arguments)
         result = self.connection.transmit(payload)
@@ -58,7 +57,7 @@ class Reader:
             data, n, sw1, sw2 = result
 
         if [sw1, sw2] == option.answers.get("fail"):
-            sys.exit(f"Instruction {mode} failed")
+            raise Exception(f"Instruction {mode} failed")
 
         print(f"success: {mode}")
         if data:
