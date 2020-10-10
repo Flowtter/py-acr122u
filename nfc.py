@@ -100,7 +100,7 @@ class Reader:
         @number of Bytes to read : 1
 
         E.g. 0x00, 0x02"""
-        self.command("read_binary_blocks", [block_number, number_of_byte_to_read])
+        return self.command("read_binary_blocks", [block_number, number_of_byte_to_read])
 
     def update_binary_blocks(self, block_number, number_of_byte_to_update, block_data):
         """update n bytes in the card with block_data at the block_number index
