@@ -31,7 +31,7 @@ class Reader:
         return reader, c
 
     def command(self, mode, arguments=None):
-        """Send a payload the the reader
+        """send a payload to the reader
         format:
         CLA INS P1 P2 P3 Lc Data Le
 
