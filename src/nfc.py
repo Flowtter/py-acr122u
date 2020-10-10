@@ -1,8 +1,9 @@
 import smartcard.System
+from smartcard.util import toHexString
+from smartcard.ATR import ATR
 import sys
 
-import utils
-import dictionary
+from src import utils, option
 
 
 class Reader:
@@ -42,8 +43,8 @@ class Reader:
         CLA INS P1 P2
 
         return the data or sw1 sw2 depending on the request"""
-        mode = dictionary.alias.get(mode) or mode
-        payload = dictionary.options.get(mode)
+        mode = option.alias.get(mode) or mode
+        payload = option.options.get(mode)
 
         if not payload:
             sys.exit("Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
@@ -56,14 +57,14 @@ class Reader:
         else:
             data, n, sw1, sw2 = result
 
-        if [sw1, sw2] == dictionary.answers.get("fail"):
+        if [sw1, sw2] == option.answers.get("fail"):
             sys.exit(f"Instruction {mode} failed")
 
         print(f"success: {mode}")
         if data:
             return data
 
-        if [sw1, sw2] != dictionary.answers.get("success"):
+        if [sw1, sw2] != option.answers.get("success"):
             return sw1, sw2
 
     def get_uid(self):
@@ -152,6 +153,15 @@ class Reader:
 
         E.g. 0x01"""
         self.command("set_timeout", [timeout_parameter])
+
+    def info(self):
+        atr = ATR(self.connection.getATR())
+        historical_byte = toHexString(atr.getHistoricalBytes(), 0)
+        print(historical_byte)
+        print(historical_byte[-17:-12])
+        card_name = historical_byte[-17:-12]
+        name = option.cards.get(card_name, "")
+        print(f"Card Name: {name}\n\tT0 {atr.isT0Supported()}\n\tT1 {atr.isT1Supported()}\n\tT1 {atr.isT15Supported()}")
 
     @staticmethod
     def print_data(data):
