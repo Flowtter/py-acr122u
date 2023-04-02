@@ -1,4 +1,5 @@
 import smartcard.System
+from smartcard.CardConnection import CardConnection
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
 
@@ -59,7 +60,7 @@ class Reader:
                 "Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
 
         payload = utils.replace_arguments(payload, arguments)
-        result = self.connection.transmit(payload)
+        result = self.connection.transmit(payload, protocol=CardConnection.T1_protocol)
 
         if len(result) == 3:
             data, sw1, sw2 = result
