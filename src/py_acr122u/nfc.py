@@ -1,9 +1,11 @@
+from typing import List
+
 import smartcard.System
 from smartcard.CardConnection import CardConnection
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
 
-from src.py_acr122u import utils, error, option
+from . import utils, error, option
 
 
 class Reader:
@@ -194,6 +196,46 @@ class Reader:
         Example:
             0x01"""
         self.command("set_timeout", [timeout_parameter])
+
+    def direct_transmit(self, payload: List[int]):
+        """send the payload to the tag or reader.
+        using this you can send messages directly to the PN532 chip
+        doc available here: https://www.nxp.com/docs/en/user-guide/141520.pdf
+
+        Attributes:
+            payload: the payload to send to the PN532 chip
+
+        Example:
+            [0xd4, 0x60, 0xFF, 0x02, 0x10]
+        """
+        return self.command("direct_transmit", [len(payload), payload])
+
+    def set_auto_polling(self, enabled: bool):
+        """enable or disable Auto PICC Polling
+
+        Attributes:
+            enabled: True to enable, False to disable
+
+        """
+        self.set_picc_bit(7, enabled)
+
+    def set_picc_bit(self, bit: int, value: bool):
+        """set a PICC bit to update the PICC operating parameter as described in section 6.5
+        of API-ACR122U-2.02.pdf
+
+        Attributes:
+            bit: the bit to set
+            value: True for 1, False for 0
+        """
+        if bit < 0 or bit > 7:
+            raise error.BitOutOfRange(f"Bit {bit} is not in the picc operating parameter")
+
+        picc = self.get_picc_version()[1]
+        if value:
+            picc |= 1 << bit
+        else:
+            picc &= ~ (1 << bit)
+        self.set_picc_version(picc)
 
     def info(self):
         """print the type of the card on the reader"""

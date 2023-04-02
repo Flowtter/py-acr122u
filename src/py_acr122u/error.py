@@ -45,3 +45,14 @@ class InstructionFailed(Error):
 
     def __init__(self, message):
         self.message = message
+
+
+class BitOutOfRange(Error):
+    """Exception raised when you try to set a bit that does not exsist
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message):
+        self.message = message
