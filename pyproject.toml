@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py-acr122u"
-version = "2.0.1"
+version = "2.1.0"
 description = "This is a python library for the ACR122U NFC reader"
 readme = "README.md"
 authors = [{ name = "Robert van Dijk", email = "contact@robertvandijk.nl" }]
@@ -27,7 +27,7 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest", "pytest-mock"]
 Homepage = "https://github.com/robertdijk/py-acr122u"
 
 [tool.bumpver]
-current_version = "2.0.1"
+current_version = "2.1.0"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message  = "Bump version {old_version} -> {new_version}"
 commit          = true
