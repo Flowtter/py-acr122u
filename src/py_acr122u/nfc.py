@@ -248,7 +248,7 @@ class Reader:
 
     def reset_lights(self):
         """turn the red and green LED off"""
-        self.led_control(0b00110000, 0x00, 0x00, 0x00, 0x00)
+        self.led_control(0b00001100, 0x00, 0x00, 0x00, 0x00)
 
     def info(self):
         """print the type of the card on the reader"""
