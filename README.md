@@ -1,6 +1,13 @@
 # PY-ACR122U
 
-<img src="http://downloads.acs.com.hk/product-website-image/acr38-image.jpg" width="150" height="150">
+
+![PyPI - License](https://img.shields.io/pypi/v/py-acr122u)
+![PyPI - License](https://img.shields.io/pypi/l/py-acr122u)
+![PyPI - License](https://img.shields.io/pypi/dm/py-acr122u)
+![PyPI - License](https://img.shields.io/pypi/pyversions/py-acr122u)
+![PyPI - License](https://img.shields.io/pypi/wheel/py-acr122u)
+
+
 
 This is a python library for the ACR122U NFC reader
 
