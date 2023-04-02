@@ -237,6 +237,18 @@ class Reader:
             picc &= ~ (1 << bit)
         self.set_picc_version(picc)
 
+    def mute_buzzer(self):
+        """mute the buzzer for when a card is scanned"""
+        self.buzzer_sound(0x00)
+
+    def unmute_buzzer(self):
+        """unmute the buzzer for when a card is scanned"""
+        self.buzzer_sound(0xFF)
+
+    def reset_lights(self):
+        """turn the red and green LED off"""
+        self.led_control(0b00110000, 0x00, 0x00, 0x00, 0x00)
+
     def info(self):
         """print the type of the card on the reader"""
         atr = ATR(self.connection.getATR())
