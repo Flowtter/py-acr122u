@@ -1,6 +1,7 @@
-from src.py_acr122u import nfc
+from py_acr122u import nfc
 
 reader = nfc.Reader()
+reader.connect()
 
 reader.load_authentication_data(0x01, [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
 reader.authentication(0x00, 0x61, 0x01)
@@ -28,6 +29,7 @@ def read(r, position, number):
 
 def read_16(r, position, number):
     return r.read_binary_blocks(position, number)
+
 
 write(reader, 0x01, 0x20, [0x00 for i in range(16)])
 print(read(reader, 0x01, 0x20))
