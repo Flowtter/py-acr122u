@@ -55,7 +55,8 @@ class Reader:
         payload = option.options.get(mode)
 
         if not payload:
-            raise error.OptionOutOfRange("Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
+            raise error.OptionOutOfRange(
+                "Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
 
         payload = utils.replace_arguments(payload, arguments)
         result = self.connection.transmit(payload)
@@ -211,5 +212,5 @@ class Reader:
 
     @staticmethod
     def print_sw1_sw2(sw1, sw2):
-            print(f"sw1 : {sw1} {hex(sw1)}\n"
-                  f"sw2 : {sw2} {hex(sw2)}")
+        print(f"sw1 : {sw1} {hex(sw1)}\n"
+              f"sw2 : {sw2} {hex(sw2)}")
