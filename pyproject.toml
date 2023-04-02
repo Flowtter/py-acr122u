@@ -21,7 +21,7 @@ dependencies = [
 requires-python = ">=3.11"
 
 [project.optional-dependencies]
-dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest", "pytest-mock"]
 
 [project.urls]
 Homepage = "https://github.com/robertdijk/py-acr122u"
@@ -40,4 +40,12 @@ push            = false
     'version = "{version}"',
 ]
 "src/py_acr122u/__init__.py" = ["{version}"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+    "integration",
+]
 
