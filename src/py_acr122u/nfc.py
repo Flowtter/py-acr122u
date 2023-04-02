@@ -13,6 +13,7 @@ class Reader:
         """create an ACR122U object
         doc available here: http://downloads.acs.com.hk/drivers/en/API-ACR122U-2.02.pdf"""
         self.reader_name, self.connection = self.instantiate_reader()
+        self.pn532 = self._PN532(self)
 
     @staticmethod
     def instantiate_reader():
@@ -269,3 +270,71 @@ class Reader:
     def print_sw1_sw2(sw1, sw2):
         print(f"sw1 : {sw1} {hex(sw1)}\n"
               f"sw2 : {sw2} {hex(sw2)}")
+
+    class _PN532:
+        """the PN532 chip inside the ACR122U
+        Methods in the class can be used to communicate with the chip
+        see docs at: https://www.nxp.com/docs/en/user-guide/141520.pdf
+        """
+
+        def __init__(self, acr122u):
+            """create a PN532 object
+
+            Attributes:
+                acr122u: the reader used to communicate with the chip (i.e. the reader the chip is in)
+            """
+            self.acr122u: Reader = acr122u
+
+        def transmit(self, payload: List[int]):
+            """send a payload to the chip
+
+            Attributes:
+                payload: the payload to send
+
+            Returns:
+                the response from the chip
+            """
+            return self.acr122u.direct_transmit(payload)
+
+        def command(self, mode, arguments=None):
+            """send a command to the chip
+
+            Attributes:
+                mode: key value of option.pn532_options
+                arguments: replace `-1` in the payload by arguments
+
+            Returns:
+                the response from the chip
+            """
+            payload = option.pn532_options.get(mode)
+
+            if not payload:
+                raise error.OptionOutOfRange(
+                    "Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
+
+            payload = utils.replace_arguments(payload, arguments)
+            result = self.transmit(payload)
+
+            return result
+
+        def in_auto_poll(self, poll_nr: int, period: int, type1: int, *types):
+            """
+            this command is used to poll card(s) / target(s) of specified Type present in the RF field.
+            docs: https://www.nxp.com/docs/en/user-guide/141520.pdf section 7.3.13
+
+            Attributes:
+                poll_nr -  specifies the number of polling (one polling is a polling for each Type j)
+                    0x01: 0xFE:1 up to 254 polling
+                    0xFF: Endless polling
+                period - (0x01 – 0x0F) indicates the polling period in units of 150 ms
+                type1 - indicates the mandatory target type to be polled at the 1st time
+                types -  indicate the optional target types to be polled at the 2nd up to the Nth time (N ≤ 15).
+
+
+            Returns:
+                the response from the chip
+            """
+            arguments = [poll_nr, period, type1] + list(types)
+
+            data = self.command("in_auto_poll", arguments)
+            return data
