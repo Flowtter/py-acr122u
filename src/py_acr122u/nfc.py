@@ -21,14 +21,17 @@ class Reader:
         reader = readers[0]
         c = reader.createConnection()
 
+        return reader, c
+
+    def connect(self):
+        """connect to the card
+        only works if a card is on the reader"""
         try:
-            c.connect()
+            self.connection.connect()
         except:
             raise error.NoCommunication(
                 "The reader has been deleted and no communication is now possible. Smartcard error code : 0x7FEFFF97"
                 "\nHint: try to connect a card to the reader")
-
-        return reader, c
 
     def command(self, mode, arguments=None):
         """send a payload to the reader
