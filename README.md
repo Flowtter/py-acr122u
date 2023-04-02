@@ -10,8 +10,10 @@ This is a python library for the ACR122U NFC reader
 - pip install -r requirements.txt
 
 ## Usage
+
 ```python
-from src import nfc
+
+from py_acr122u import nfc
 
 reader = nfc.Reader()
 reader.print_data(reader.get_uid())

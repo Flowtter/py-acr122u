@@ -1,0 +1,43 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-acr122u"
+version = "1.0.0"
+description = "This is a python library for the ACR122U NFC reader"
+readme = "README.md"
+authors = [{ name = "Robert van Dijk", email = "contact@robertvandijk.nl" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["nfc", "acs", "acr122u"]
+dependencies = [
+    "pyscard>=2.0.7",
+]
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/robertdijk/py-acr122u"
+
+[tool.bumpver]
+current_version = "1.0.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message  = "Bump version {old_version} -> {new_version}"
+commit          = true
+tag             = true
+push            = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+    'version = "{version}"',
+]
+"src/py_acr122u/__init__.py" = ["{version}"]
+

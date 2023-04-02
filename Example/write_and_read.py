@@ -1,4 +1,4 @@
-from src import nfc
+from src.py_acr122u import nfc
 
 reader = nfc.Reader()
 
