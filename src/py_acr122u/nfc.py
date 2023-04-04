@@ -7,6 +7,10 @@ from smartcard.ATR import ATR
 
 from . import utils, error, option
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class Reader:
     def __init__(self):
@@ -19,11 +23,15 @@ class Reader:
     def instantiate_reader():
         readers = smartcard.System.readers()
 
+        logger.debug(f"Available readers: {readers}")
+
         if len(readers) == 0:
             raise error.NoReader("No readers available")
 
         reader = readers[0]
         c = reader.createConnection()
+
+        logger.info(f"Using reader {reader}")
 
         return reader, c
 
@@ -32,6 +40,7 @@ class Reader:
         only works if a card is on the reader"""
         try:
             self.connection.connect()
+            logger.debug("Reader connected")
         except:
             raise error.NoCommunication(
                 "The reader has been deleted and no communication is now possible. Smartcard error code : 0x7FEFFF97"
@@ -63,6 +72,7 @@ class Reader:
                 "Option do not exist\nHint: try to call help(nfc.Reader().command) to see all options")
 
         payload = utils.replace_arguments(payload, arguments)
+        logger.debug(f"Transmitting {payload}")
         result = self.connection.transmit(payload, protocol=CardConnection.T1_protocol)
 
         if len(result) == 3:
@@ -73,7 +83,8 @@ class Reader:
         if [sw1, sw2] == option.answers.get("fail"):
             raise error.InstructionFailed(f"Instruction {mode} failed")
 
-        print(f"success: {mode}")
+        logger.debug(f"Success: {mode}, result: {result}")
+
         if data:
             return data
 
@@ -85,6 +96,7 @@ class Reader:
 
         Format:
             CLA INS P1 P2 P3 Lc Data Le"""
+        logger.debug(f"Transmitting {payload}")
         result = self.connection.transmit(payload)
 
         if len(result) == 3:
@@ -94,6 +106,8 @@ class Reader:
 
         if [sw1, sw2] == option.answers.get("fail"):
             raise error.InstructionFailed(f"Payload {payload} failed")
+
+        logger.debug(f"Success transmitting payload: {payload}")
 
     def get_uid(self):
         """get the uid of the card"""
@@ -294,6 +308,7 @@ class Reader:
             Returns:
                 the response from the chip
             """
+            logger.debug(f"Transmitting payload {payload} to PN532")
             return self.acr122u.direct_transmit(payload)
 
         def command(self, mode, arguments=None):
