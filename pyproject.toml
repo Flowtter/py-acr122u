@@ -14,7 +14,7 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
-keywords = ["nfc", "acs", "acr122u"]
+keywords = ["nfc", "acr", "acr122u"]
 dependencies = [
     "pyscard>=2.0.7",
 ]
