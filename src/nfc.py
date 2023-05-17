@@ -140,7 +140,66 @@ class Reader:
         Examples:
             0x01, 0x10, [0x00, 0x01, 0x02, 0x03, 0x04, 0x05
             0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15]"""
-        self.command("update_binary_blocks", [block_number, number_of_byte_to_update, block_data])
+        self.command("update_binary_blocks",[block_number, number_of_byte_to_update, block_data]
+        )
+
+    def create_value_block(self, block_number, value):
+        """Create value block at given block number with given 4-byte signed long integer value
+
+        Attributes:
+            block number : 1 byte
+            value : 4 bytes, signed long integer
+
+        Example:
+            0x02, [0xFF, 0xFF, 0xFF, 0xFC] : 4 byte signed long integer value -4 at block 2
+        """
+        self.command("create_value_block", [block_number, value])
+
+    def increment_value_block(self, block_number, value):
+        """Increment value block at given block number with given 4-byte signed long integer value
+
+        Attributes:
+            block number : 1 byte
+            value : 4 bytes, signed long integer
+
+        Example:
+            0x02, [0x00, 0x00, 0x00, 0x01] : increment stored value at value block 2 by 1
+        """
+        self.command("increment_value_block", [block_number, value])
+
+    def decrement_value_block(self, block_number, value):
+        """Decrement value block at given block number with given 4byte signed long integer value
+
+        Attributes:
+            block number : 1 byte
+            value : 4 bytes, signed long integer
+
+        Example:
+            0x02, [0x00, 0x00, 0x00, 0x01] : decrement stored value at value block 2 by 1
+        """
+        self.command("decrement_value_block", [block_number, value])
+
+    def read_value_block(self, block_number):
+        """Read value block at given block number
+
+        Attributes:
+            block number : 1 byte (0-63)
+
+        Example:
+            0x01"""
+        return self.command("read_value_block", [block_number])
+
+    def restore_value_block(self, source_block_number, target_block_number):
+        """Copies a value from a value block to another value block
+
+        Attributes:
+            source_block_number : 1 byte, source block number (0-63)
+            target_block_number : 1 byte, target block number (0-63)
+
+        Example:
+            0x01, 0x02"""
+        self.command("restore_value_block", [
+                     source_block_number, target_block_number])
 
     def led_control(self, led_state, t1, t2, number_of_repetition, link_to_buzzer):
         """control led state
