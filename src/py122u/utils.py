@@ -3,7 +3,7 @@ def int_list_to_hexadecimal_list(data):
 
 
 def int_list_to_string_list(data):
-    return ''.join([chr(e) for e in data])
+    return "".join([chr(e) for e in data])
 
 
 def replace_arguments(data, arguments):
