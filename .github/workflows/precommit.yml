@@ -1,0 +1,21 @@
+name: pre-commit
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [master]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install libpcsclite-dev
+        run: sudo apt-get install libpcsclite-dev
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+          cache: "pip"
+      - run: pip install -r requirements-dev.txt
+      - uses: pre-commit/action@v3.0.0

@@ -10,11 +10,12 @@ options = {
     "decrement_value_block": [0xFF, 0xD7, 0x00, -1, 0x05, 0x02, -1],
     "read_value_block": [0xFF, 0xB1, 0x00, -1, 0x04],
     "restore_value_block": [0xFF, 0xD7, 0x00, -1, 0x02, 0x03, -1],
-    "led-control": [0xFF, 0x00, 0x40, -1, -0x04, -1, -1, -1, -1],
+    "led_control": [0xFF, 0x00, 0x40, -1, -0x04, -1, -1, -1, -1],
     "get_picc_version": [0xFF, 0x00, 0x50, 0x00, 0x00],
     "set_picc_version": [0xFF, 0x00, 0x51, -1, 0x00],
     "buzzer_sound": [0xFF, 0x00, 0x52, -1, 0x00],
     "set_timeout": [0xFF, 0x00, 0x41, -1, 0x00],
+    "direct_transmit": [0xFF, 0x00, 0x00, 0x00, -1, -1],
 }
 alias = {
     "gu": "get_uid",
@@ -23,16 +24,13 @@ alias = {
     "auth": "authentication",
     "rbb": "read_binary_blocks",
     "ubb": "update_binary_blocks",
-    "ld": "led-control",
+    "ld": "led_control",
     "gpv": "get_picc_version",
     "spv": "set_picc_version",
     "b": "buzzer_sound_mute",
     "st": "set_timeout",
 }
-answers = {
-    "success": [0x90, 0x0],
-    "fail": [0x63, 0x0]
-}
+answers = {"success": [0x90, 0x0], "fail": [0x63, 0x0]}
 cards = {
     "00 01": "MIFARE Classic 1K",
     "00 02": "MIFARE Classic 4K",
@@ -40,5 +38,28 @@ cards = {
     "00 26": "MIFARE Mini",
     "F0 04": "Topaz and Jewel",
     "F0 11": "FeliCa 212K",
-    "F0 12": "FeliCa 424K"
+    "F0 12": "FeliCa 424K",
+}
+pn532_options = {
+    "in_auto_poll": [
+        0xD4,
+        0x60,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+    ],
 }

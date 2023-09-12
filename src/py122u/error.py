@@ -1,5 +1,6 @@
 class Error(Exception):
     """Base class for exceptions in this module."""
+
     pass
 
 
@@ -38,6 +39,17 @@ class OptionOutOfRange(Error):
 
 class InstructionFailed(Error):
     """Exception raised when the instruction failed
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message):
+        self.message = message
+
+
+class BitOutOfRange(Error):
+    """Exception raised when you try to set a bit that does not exsist
 
     Attributes:
         message -- explanation of the error
